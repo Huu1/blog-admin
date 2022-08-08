@@ -1,25 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import {
+  Route,
+  unstable_HistoryRouter as Router,
+  Routes,
+} from "react-router-dom";
+import "./App.css";
+import Basic from "@/Layout/Basic";
+import Home from "@/views/Home";
+import LoginPage from "@/Layout/Login";
+import { AuthProvider, RequireAuth } from "@/Layout/Auth";
+import { customHistory } from "@/utils/history";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthProvider>
+      <Router history={customHistory}>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <RequireAuth>
+                <Basic />
+              </RequireAuth>
+            }
+          >
+            <Route index element={<Home />} />
+          </Route>
+          <Route path="login" element={<LoginPage />} />
+          <Route path="*" element={<div>404</div>} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 

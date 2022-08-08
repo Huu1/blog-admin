@@ -1,0 +1,15 @@
+.header-trigger {
+  padding: 0 24px;
+  font-size: 18px;
+  line-height: 64px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.page-main {
+  height: calc(100vh - 64px);
+  margin-top: 64px;
+}
+.page-content > div {
+    flex: 1;
+}

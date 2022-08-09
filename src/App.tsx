@@ -11,6 +11,13 @@ import LoginPage from "@/Layout/Login";
 import { AuthProvider, RequireAuth } from "@/Layout/Auth";
 import { customHistory } from "@/utils/history";
 
+function Test1() {
+  return <div>test1</div>;
+}
+function Test2() {
+  return <div>test2</div>;
+}
+
 function App() {
   return (
     <AuthProvider>
@@ -25,6 +32,10 @@ function App() {
             }
           >
             <Route index element={<Home />} />
+            <Route path="test1" element={<Test1 />} />
+            <Route path="test2/test3" element={<Test2/>} />
+            <Route path="test2/test4" element={<Test2/>} />
+            <Route path="test2/test5" element={<Test2/>} />
           </Route>
           <Route path="login" element={<LoginPage />} />
           <Route path="*" element={<div>404</div>} />

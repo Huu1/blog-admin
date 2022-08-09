@@ -4,6 +4,7 @@ import { TOKEN } from "@/utils/axios";
 import { useRequest } from "ahooks";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
+import { Navigate, useNavigate } from "react-router-dom";
 
 interface AuthContextType {
   user: any;
@@ -31,7 +32,6 @@ export function useAuth() {
 
 export function RequireAuth({ children }: { children: JSX.Element }) {
   const auth = useAuth();
-
   const initState = useRequest(getCurrentUser, {
     onSuccess: auth.setCurrentUser,
   });
@@ -46,5 +46,10 @@ export function RequireAuth({ children }: { children: JSX.Element }) {
       </Backdrop>
     );
   }
+
+  if (initState.error) {
+    return <Navigate to="/login"  replace />
+  }
+
   return children;
 }

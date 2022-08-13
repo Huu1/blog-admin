@@ -1,23 +1,21 @@
 import React from "react";
 import { getCurrentUser } from "@/service/login";
 import { TOKEN } from "@/utils/axios";
-import { useRequest } from "ahooks";
-import Backdrop from "@mui/material/Backdrop";
-import CircularProgress from "@mui/material/CircularProgress";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 
 interface AuthContextType {
   user: any;
   signout: (callback: VoidFunction) => void;
   setCurrentUser: (callback: VoidFunction) => void;
 }
-const AuthContext = React.createContext<AuthContextType>(null!);
+export const AuthContext = React.createContext<AuthContextType>(null!);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setCurrentUser] = React.useState<any>(null);
 
   const signout = (callback: VoidFunction) => {
-    localStorage.remove(TOKEN);
+    localStorage.removeItem(TOKEN)
     callback?.();
   };
 
@@ -32,23 +30,18 @@ export function useAuth() {
 
 export function RequireAuth({ children }: { children: JSX.Element }) {
   const auth = useAuth();
-  const initState = useRequest(getCurrentUser, {
+
+  const { isLoading,  isError } = useQuery(["currentUser"], getCurrentUser, {
     onSuccess: auth.setCurrentUser,
+    refetchOnWindowFocus: false,
   });
 
-  if (initState.loading) {
-    return (
-      <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={true}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
-    );
+  if (isLoading) {
+    return <>loading..</>
   }
 
-  if (initState.error) {
-    return <Navigate to="/login"  replace />
+  if (isError) {
+    return <Navigate to="/login" replace />;
   }
 
   return children;

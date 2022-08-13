@@ -1,21 +1,33 @@
-import React, { useState } from "react";
+import React from "react";
 import "./index.css";
 import { Outlet } from "react-router-dom";
-import AppHeader from "@/Components/Header";
-import Box from "@mui/material/Box";
-import SideBar from "@/Components/SideBar";
+import AppHeader from "@/Components/AppHeader";
+import AppSideBar from "@/Components/AppSideBar";
+import { Card, Layout } from "antd";
+
+const { Content } = Layout;
 
 const Index = () => {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = React.useState(false);
   return (
     <>
-      <AppHeader />
-      <Box className="page-main flex">
-        <SideBar />
-        <Box className=" overflow-y-auto flex-1 flex flex-col page-content p-6">
-          <Outlet />
-        </Box>
-      </Box>
+      <Layout className=" h-screen">
+        <AppSideBar collapsed={collapsed} />
+        <Layout>
+          <AppHeader collapsed={collapsed} setCollapsed={setCollapsed} />
+          <Content
+            className="site-layout-background"
+            style={{
+              padding: 24,
+              minHeight: 280,
+            }}
+          >
+            <Card>
+              <Outlet />
+            </Card>
+          </Content>
+        </Layout>
+      </Layout>
     </>
   );
 };

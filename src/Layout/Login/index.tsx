@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Login } from "@/service/login";
 
-import { Button, CircularProgress, Grid, TextField } from "@mui/material";
 import { useRequest } from "ahooks";
 import { TOKEN } from "@/utils/axios";
+import { Button, Input } from "antd";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -32,34 +32,28 @@ export default function LoginPage() {
   });
 
   return (
-    <Grid>
       <div>
         <React.Fragment>
-          <TextField
+          <Input
             id="email"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            margin="normal"
             placeholder="Email Adress"
             type="email"
-            fullWidth
           />
-          <TextField
+          <Input
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            margin="normal"
             placeholder="Password"
             type="password"
-            fullWidth
           />
           <div>
             {loading ? (
-              <CircularProgress size={26} />
+              <>loading</>
             ) : (
               <Button
                 onClick={run}
-                variant="contained"
                 color="primary"
                 size="large"
               >
@@ -69,6 +63,5 @@ export default function LoginPage() {
           </div>
         </React.Fragment>
       </div>
-    </Grid>
   );
 }
